@@ -27,13 +27,12 @@ private final ProductService productService;
     }
 
     @GetMapping("products/{productId}")
-    public ResponseEntity<ProductDTO> getProductBy(@PathVariable("productId") UUID id){
-        ProductDTO found = productService.getProductBy(id);
-
-        if (found != null) {
-            return ResponseEntity.ok(found);
+    public String findProduct(@PathVariable("productId") UUID productId, Model model) {
+        ProductDTO product = productService.getProductBy(productId);
+        if (product != null) {
+            model.addAttribute("product", product);
+            return "products/product";
         } else {
-
             throw new ResourceNotFoundException();
         }
     }
